@@ -433,7 +433,7 @@ const DestinationForm = () => {
             </div>
 
             <CardFooter className="flex justify-between px-0 pt-6">
-              <Button variant="outline" onClick={() => navigate("/destinations")}>
+              <Button variant="outline" onClick={() => navigate("/destination")}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>

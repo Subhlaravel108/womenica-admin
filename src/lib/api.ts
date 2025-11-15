@@ -136,6 +136,31 @@ export const ChangeUserStatus = async ({
 
 //End of User Apis
 
+export const fetchAllContacts=async({page=1,search=""}={})=>{
+  const res=await api.get("/contacts-list",{
+    headers:{
+      Authorization:`Bearer ${token}`
+    },
+    params:{
+      page,
+      search 
+    }
+  })
+  return res.data
+}
+export const fetchAllBookings=async({page=1,search=""}={})=>{
+  const res=await api.get("/bookings-list",{
+    headers:{
+      Authorization:`Bearer ${token}`
+    },
+    params:{
+      page,
+      search 
+    }
+  })
+  return res.data
+}
+
 // Category APIs
 
 export const categoryFetchList = async ({ page = 1, search = "" } = {}) => {

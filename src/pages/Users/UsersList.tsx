@@ -17,10 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Eye, Search } from "lucide-react";
+import { Eye, Loader2, Search } from "lucide-react";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import { toast } from "sonner";
 import Swal from "sweetalert2";
 
 const UsersList = () => {
@@ -28,23 +26,25 @@ const UsersList = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [lastPage, setLastPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
+  // ✅ Fetch users with pagination
+  const loadUsers = async () => {
+    setLoading(true);
+    try {
+      const res = await fetchUsers({ page, search: searchQuery });
+      setUsers(res.data || []);
+      setTotalPages(res.pagination?.totalPages || 1);
+    } catch (err) {
+      console.error("❌ Failed to fetch users:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadUsers = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchUsers({ page, search: searchQuery });
-        setUsers(data.data);
-        setTotal(data.total);
-        setLastPage(data.last_page);
-      } finally {
-        setLoading(false);
-      }
-    };
     loadUsers();
   }, [page, searchQuery]);
 
@@ -53,41 +53,32 @@ const UsersList = () => {
     setPage(1);
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      (user.name?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
-      (user.email?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
-      (user.phone?.toLowerCase() || "").includes(searchQuery.toLowerCase())
-  );
-
-  // Toggle user status (0 = inactive, 1 = active) with a Swal confirmation
+  // ✅ Change user status with confirmation
   const handleChangeStatus = async (user: any) => {
     const newStatus = user.status === "Active" ? "Deactive" : "Active";
     const result = await Swal.fire({
       title: "Change User Status",
-      text: `Are you sure you want to set ${user.name}'s status to ${
-        newStatus === "Active" ? "Active" : "Deactive"
-      }?`,
+      text: `Are you sure you want to set ${user.name}'s status to ${newStatus}?`,
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Yes, change it!",
       cancelButtonText: "Cancel",
     });
+
     if (result.isConfirmed) {
       try {
         await ChangeUserStatus({ user_id: user._id, status: newStatus });
         Swal.fire({
           icon: "success",
           title: "Status Changed",
-          text: `User status changed to ${
-            newStatus === "Active" ? "Active" : "Deactive"
-          }`,
+          text: `User status changed to ${newStatus}`,
           timer: 1500,
           showConfirmButton: false,
         });
-        // Update local state.
         setUsers((prev) =>
-          prev.map((u) => (u.id === user.id ? { ...u, status: newStatus } : u))
+          prev.map((u) =>
+            u._id === user._id ? { ...u, status: newStatus } : u
+          )
         );
       } catch (error: any) {
         Swal.fire({
@@ -106,76 +97,123 @@ const UsersList = () => {
       </div>
 
       <Card className="p-4 shadow-md">
+        {/* 🔍 Search Bar */}
         <div className="flex items-center mb-4">
           <Search className="w-5 h-5 text-gray-500 mr-2" />
           <Input
-            placeholder="Search by name, email or country..."
+            placeholder="Search by name, email, or phone..."
             value={searchQuery}
             onChange={handleSearch}
             className="max-w-sm"
           />
         </div>
 
-        <div className="overflow-x-auto rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="px-4 py-2">User ID</TableHead>
-                <TableHead className="px-4 py-2">Name</TableHead>
-                <TableHead className="px-4 py-2">Email</TableHead>
-                <TableHead className="px-4 py-2">Phone</TableHead>
-                <TableHead className="px-4 py-2 text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.length === 0 ? (
+        {/* 🧭 Table with Loading State */}
+        <div className="overflow-x-auto rounded-md border min-h-[300px] relative">
+          {loading ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/70">
+              <Loader2 className="w-8 h-8 animate-spin text-gray-600" />
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-8">
-                    No users found. Try a different search term.
-                  </TableCell>
+                  <TableHead className="px-4 py-2">#</TableHead>
+                  <TableHead className="px-4 py-2">Name</TableHead>
+                  <TableHead className="px-4 py-2">Email</TableHead>
+                  <TableHead className="px-4 py-2">Phone</TableHead>
+                  <TableHead className="px-4 py-2">Status</TableHead>
+                  <TableHead className="px-4 py-2 text-right">
+                    Actions
+                  </TableHead>
                 </TableRow>
-              ) : (
-                filteredUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="px-4 py-2 font-medium">
-                      {user.id}
-                    </TableCell>
-                    <TableCell className="px-4 py-2">{user.name}</TableCell>
-                    <TableCell className="px-4 py-2">{user.email}</TableCell>
-                    <TableCell className="px-4 py-2">{user.phone}</TableCell>
-                    <TableCell className="px-4 py-2 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            Actions
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-white shadow-lg border">
-                          <DropdownMenuItem onClick={() => handleChangeStatus(user)}>
-                            <span className="block w-full">
-                              {user.status === "Active" ? "Set Deactive" : "Set Active"}
-                            </span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => {
-                              setSelectedUser(user);
-                              setShowModal(true);
-                            }}
-                          >
-                            <Eye className="mr-2 h-4 w-4" />
-                            <span>View Details</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+              </TableHeader>
+              <TableBody>
+                {users.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8">
+                      No users found.
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  users.map((user, index) => (
+                    <TableRow key={user._id}>
+                      <TableCell>{index + 1 + (page - 1) * 10}</TableCell>
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.phone}</TableCell>
+                      <TableCell>
+                        <span
+                          className={`px-2 py-1 rounded-full text-sm ${
+                            user.status === "Active"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {user.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              Actions
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            align="end"
+                            className="bg-white shadow-lg border"
+                          >
+                            <DropdownMenuItem
+                              onClick={() => handleChangeStatus(user)}
+                            >
+                              {user.status === "Active"
+                                ? "Set Deactive"
+                                : "Set Active"}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedUser(user);
+                                setShowModal(true);
+                              }}
+                            >
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Details
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </div>
+
+        {/* 🧭 Pagination */}
+        <div className="flex justify-between items-center mt-4">
+          <Button
+            variant="outline"
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+          >
+            Previous
+          </Button>
+          <span className="text-sm text-gray-700">
+            Page {page} of {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Next
+          </Button>
         </div>
       </Card>
 
+      {/* 👁️ User Detail Modal */}
       {showModal && selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
@@ -200,12 +238,8 @@ const UsersList = () => {
                 {selectedUser.phone || "-"}
               </div>
               <div>
-                <span className="font-semibold">Country:</span>{" "}
-                {selectedUser.country || "-"}
-              </div>
-              <div>
-                <span className="font-semibold">Type:</span>{" "}
-                {selectedUser.type || "-"}
+                <span className="font-semibold">Status:</span>{" "}
+                {selectedUser.status || "-"}
               </div>
               <div>
                 <span className="font-semibold">Created At:</span>{" "}

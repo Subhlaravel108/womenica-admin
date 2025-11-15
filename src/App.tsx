@@ -23,8 +23,9 @@ import Dashboard from "./pages/Dashboard";
 import BlogsList from "./pages/Blogs/BlogsList";
 import BlogForm from "./pages/Blogs/BlogForm";
 
-// Bookings and Users
+// Bookings and contacts and Users
 import UsersList from "./pages/Users/UsersList";
+
 
 // Settings
 import Settings from "./pages/Settings";
@@ -56,6 +57,8 @@ import TourPackageList from "./pages/TourPackage/TourPackageList";
 import TourPackageForm from "./pages/TourPackage/TourPackageForm";
 import DestinationList from "./pages/destination/DestinationList";
 import DestinationForm from "./pages/destination/DestinationForm";
+import ContactList from "./pages/contact/contact";
+import Bookings from "./pages/bookings/bookingList";
 
 const queryClient = new QueryClient();
 
@@ -225,8 +228,12 @@ const App = () => (
             <Route path="/tours/packages/add" element={<TourPackageForm/>}/>
             <Route path="/tours/packages/edit/:id" element={<TourPackageForm/>}/>
             
-            {/* Bookings and users routes */}
+            {/* Bookings, contacts and users routes */}
             <Route path="/users" element={<UsersList />} />
+
+            <Route path="/contacts" element={<ContactList/>}/>
+            <Route path="/bookings" element={<Bookings/>}/>
+
 
              {/* Categories routes */}
             <Route path="/blogs/categories" element={<CategoriesList />} />

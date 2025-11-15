@@ -19,6 +19,7 @@ import {
   ChevronDown,
   LocateIcon,
   MapPin,
+  Contact,
 } from "lucide-react";
 
 type MenuChild = {
@@ -152,6 +153,8 @@ const AdminSidebar = () => {
     ],
   },
     { icon: Users, label: "Users", to: "/users" },
+    { icon: Contact, label: "Bookings", to: "/bookings" },
+    { icon: Contact, label: "Contacts", to: "/contacts" },
     { icon: Settings, label: "Settings", to: "/settings" },
     { icon: LogIn, label: "Logout", to: "/logout" },
   ];
@@ -300,7 +303,7 @@ const AdminSidebar = () => {
 
           {/* Footer */}
           <div className="p-4 border-t border-sidebar-border/30 text-xs opacity-70 text-center">
-            {!isCollapsed && "Jewtone Admin v1.0"}
+            {!isCollapsed && "Jaipur-Thailand Admin v1.0"}
           </div>
         </div>
       </div>

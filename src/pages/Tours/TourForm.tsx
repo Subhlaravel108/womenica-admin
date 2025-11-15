@@ -355,7 +355,7 @@ function TourForm() {
       errors.price = "Price is required";
     }
     else if(!Number(formData.price) ){
-        errors.price="Price must be a number"
+        errors.price="Price must be a number" 
     }
     if (!formData.people?.trim()) {
       errors.people = "People count is required";
