@@ -503,20 +503,20 @@ export const deleteTour = async (slugOrId: string) => {
 
 export const fetchDashboardStats = async () => {
   // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
-  const res = await axios.get("http://127.0.0.1:3001/api/dashboard/overview", {
+  const res = await api.get("/dashboard/overview", {
     headers: { Authorization: `Bearer ${token}` }
   });
   return res.data;
 };
 
 export const fetchUserGraph = async () => {
-  const res = await axios.get("http://127.0.0.1:3001/api/dashboard/users-graph", {
+  const res = await api.get("/dashboard/users-graph", {
     headers: { Authorization: `Bearer ${token}` }
   });
   return res.data
 };
 export const fetchBookingsGraph = async () => {
-  const res = await axios.get("http://127.0.0.1:3001/api/dashboard/bookings-graph", {
+  const res = await api.get("/dashboard/bookings-graph", {
     headers: { Authorization: `Bearer ${token}` }
   });
   return res.data
