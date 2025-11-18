@@ -32,7 +32,7 @@ try {
   const res = await loginApi(username, password);
   const user = res.data.data; // ✅ correct extract
   const role = user.role;
-   console.log("Logged in user:", user); // Debugging line
+  //  console.log("Logged in user:", user); // Debugging line
   if (role === "admin" || role === "super admin") {
     localStorage.setItem("isAuthenticated", "true");
     localStorage.setItem("user", JSON.stringify(user));
@@ -41,7 +41,7 @@ try {
     navigate("/dashboard");
   } else {
     toast.success("You are not authorized as admin");
-    console.log("dlkfajdkf")
+    // console.log("dlkfajdkf")
   }
 } catch (error: any) {
   const message =
