@@ -289,7 +289,7 @@ if (!plainDescription) {
                 <Button
                   variant="outline"
                   type="button"
-                  onClick={() => navigate("/categories")}
+                  onClick={() => navigate("/tours/packages")}
                   disabled={loading}
                 >
                   Cancel
