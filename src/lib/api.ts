@@ -95,7 +95,7 @@ export const changePassword = async (payload: {
   // formData.append("new_password", payload.new_password);
   // formData.append("new_password_confirmation", payload.new_password_confirmation);
 
-  const response = await axios.post("http://127.0.0.1:3001/api/auth/change-password",  
+  const response = await api.post("/auth/change-password",  
      {
     current_password: payload.current_password,
     new_password: payload.new_password,
