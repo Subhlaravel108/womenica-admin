@@ -41,7 +41,7 @@ function TourForm() {
   useEffect(() => {
     fetchAllTourPackages()
       .then((packages) => {
-        console.log("Fetched packages:", packages);
+        // console.log("Fetched packages:", packages);
         setTourPackages(packages.data);
       })
       .catch((error) => {
@@ -52,7 +52,7 @@ function TourForm() {
   useEffect(() => {
     fetchDestinations()
       .then((des) => {
-        console.log("Fetched des:", des);
+        // console.log("Fetched des:", des);
         setDestination(des.data);
       })
       .catch((error) => {
@@ -68,7 +68,7 @@ function TourForm() {
         setLoading(true);
         try {
           const res = await fetchTour(id);
-          console.log("Fetched tour data:", res);
+          // console.log("Fetched tour data:", res);
           // Populate form data with fetched tour details
           setFormData({
             title: res.data.title || '',
@@ -79,7 +79,7 @@ function TourForm() {
             featureImage: res.data.featureImage || '',
             tour_duration: res.data.tour_duration || '',
             description: res.data.description || '',
-            price: res.data.price || '',
+            price: res.data.price || 0,
             people: res.data.people || '',
             countries: res.data.countries || '',
             hotelType: res.data.hotelType || '',
@@ -124,7 +124,7 @@ function TourForm() {
     featureImage: '',
     tour_duration: '',
     description: '',
-    price: '',
+    price: 0,
     people: '',
     countries: '',
     hotelType: '',
@@ -145,7 +145,7 @@ function TourForm() {
   const [selectedDestinations, setSelectedDestinations] = useState([]);
  const [addMoreKey, setAddMoreKey] = useState(Date.now());
 
-  console.log("des id=",selectedDestinations)
+  // console.log("des id=",selectedDestinations)
 
   const handleCheckboxChange = (id) => {
   setSelectedDestinations((prev) =>
@@ -445,7 +445,7 @@ const handleRemoveGalleryImage = (index: number) => {
       notIncluded: notIncludedItems.filter(item => item.trim() !== '')
     };
 
-    console.log('Tour Data:', tourData);
+    // console.log('Tour Data:', tourData);
 
     // 🔹 Step 3: Submit data to backend
     try {
@@ -786,6 +786,7 @@ const handleRemoveGalleryImage = (index: number) => {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Price</label>
                 <Input
+                 type="number"
                   placeholder="Price"
                   value={formData.price}
                   onChange={(e) => handleInputChange('price', e.target.value)}
