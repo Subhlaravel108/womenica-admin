@@ -43,7 +43,7 @@ const DownloadDataPage = () => {
       toast.success(`${filename} downloaded successfully!`);
     } catch (error) {
       console.error("Download failed:", error);
-      toast.error("Download failed. Check console.");
+      toast.error("Download failed.");
     } finally {
       setLoadingIndex(null);
     }
@@ -92,7 +92,13 @@ const DownloadDataPage = () => {
       url: "/api/tours?download=true",
       file: "all_tours.json",
     },
-   
+   {
+      title: "Feedbacks",
+      description: "Download approved JSON.",
+      url: "/api/feedback-list?download=true",
+      file: "feedbacks.json",
+    },
+
   ];
 
   return (
