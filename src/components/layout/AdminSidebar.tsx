@@ -17,6 +17,7 @@ import {
   ChevronLeft,
   Car,
   ChevronDown,
+  Package,
   LocateIcon,
   MapPin,
   Contact,
@@ -97,29 +98,29 @@ const AdminSidebar = () => {
     { icon: Home, label: "Dashboard", to: "/dashboard" },
 
 
+    // {
+    //   icon: Car,
+    //   label: "Tour Management",
+    //   to: "/tours",
+    //   children: [
+    //     {
+    //       label: "Tours",
+    //       children: [
+    //         { label: "Add Tour", to: "/tours/add" },
+    //         { label: "Tour List", to: "/tours" },
+    //       ],
+    //     },
+    //     {
+    //       label: "Tour Packages",
+    //       children: [
+    //         { label: "Add Tour Package", to: "/tours/packages/add" },
+    //         { label: "Package List", to: "/tours/packages" },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
-      icon: Car,
-      label: "Tour Management",
-      to: "/tours",
-      children: [
-        {
-          label: "Tours",
-          children: [
-            { label: "Add Tour", to: "/tours/add" },
-            { label: "Tour List", to: "/tours" },
-          ],
-        },
-        {
-          label: "Tour Packages",
-          children: [
-            { label: "Add Tour Package", to: "/tours/packages/add" },
-            { label: "Package List", to: "/tours/packages" },
-          ],
-        },
-      ],
-    },
-    {
-      icon: MapPin,
+      icon: Package,
       label: "Product Management",
       to: "/products",
       children: [
@@ -163,12 +164,12 @@ const AdminSidebar = () => {
         },
       ],
     },
-    { icon: Users, label: "Users", to: "/users" },
-    { icon: Contact, label: "Bookings", to: "/bookings" },
-    { icon: StarIcon, label: "Feedbacks", to: "/feedbacks" },
-    { icon: Contact, label: "Contacts", to: "/contacts" },
+    // { icon: Users, label: "Users", to: "/users" },
+    // { icon: Contact, label: "Bookings", to: "/bookings" },
+    // { icon: StarIcon, label: "Feedbacks", to: "/feedbacks" },
+    // { icon: Contact, label: "Contacts", to: "/contacts" },
     { icon: Settings, label: "Settings", to: "/settings" },
-    { icon: Download, label: "Download JSON", to: "/downloads" },
+    // { icon: Download, label: "Download JSON", to: "/downloads" },
     { icon: LogIn, label: "Logout", to: "/logout" },
   ];
 

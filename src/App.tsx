@@ -23,8 +23,7 @@ import Dashboard from "./pages/Dashboard";
 import BlogsList from "./pages/Blogs/BlogsList";
 import BlogForm from "./pages/Blogs/BlogForm";
 
-// Bookings and contacts and Users
-import UsersList from "./pages/Users/UsersList";
+
 
 
 // Settings
@@ -42,15 +41,9 @@ import ProductCategoryList from "./pages/ProductCategory/CategoryList";
 import NotFound from "./pages/NotFound";
 
 
-import TourList from "./pages/Tours/TourList";
-import TourForm from "./pages/Tours/TourForm";
-import TourPackageList from "./pages/TourPackage/TourPackageList";
-import TourPackageForm from "./pages/TourPackage/TourPackageForm";
 import ProductForm  from "./pages/products/ProductForm";
 import ProductList from "./pages/products/ProductList";
 import ContactList from "./pages/contact/contact";
-import Bookings from "./pages/bookings/bookingList";
-import FeedbackList from "./pages/Feedbacks/FeedbackList";
 import DownloadResources from "./pages/Download-json";
 
 const queryClient = new QueryClient();
@@ -103,24 +96,13 @@ const App = () => (
             <Route path="/blogs/add" element={<BlogForm />} />
             <Route path="/blogs/edit/:id" element={<BlogForm />} />
 
-             {/* Tours routes */}
-
-            <Route path="/tours" element={<TourList />} />
-            <Route path="/tours/add" element={<TourForm />} />
-            <Route path="/tours/edit/:id" element={<TourForm />} />
-
-            {/* Tour Packages routes */}
-
-            <Route path="/tours/packages" element={<TourPackageList/>}/>
-            <Route path="/tours/packages/add" element={<TourPackageForm/>}/>
-            <Route path="/tours/packages/edit/:id" element={<TourPackageForm/>}/>
             
-            {/* Bookings, contacts and users routes */}
-            <Route path="/users" element={<UsersList />} />
+
+            
+            
 
             <Route path="/contacts" element={<ContactList/>}/>
-            <Route path="/bookings" element={<Bookings/>}/>
-            <Route path="/feedbacks" element={<FeedbackList/>}/>
+          
 
 
              {/*blog Categories routes */}
