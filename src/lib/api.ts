@@ -166,6 +166,93 @@ export const deleteProduct=async(SlugOrId:string)=>{
 }
 
 
+// blog Category APIs
+
+export const categoryCreate = async (payload: any) => {
+  // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
+  const response = await api.post(
+    "/blog-category",
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+  );
+  return response.data;
+};
+
+
+export const categoryFetchList = async ({ page = 1, search = "" } = {}) => {
+  // const token =
+    // JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
+
+  const response = await api.get(`/blog-categories?`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      page,
+      name: search || undefined, // will exclude `name` if search is empty
+    },
+  });
+
+  return response.data;
+};
+
+export const fetchAllCategories = async () => {
+  const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
+  const res = await api.get("/category/list?per_page=1000", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.data;
+};
+
+
+
+export const fetchCategory = async (slugOrId: string) => {
+ 
+
+  const response = await api.get(`/blog-category/${slugOrId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
+
+
+export const updateCategory = async (slugOrId: string, payload: any) => {
+  // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
+  console.log("payloag=",payload)
+  const response = await api.put( 
+    `/blog-category/${slugOrId}`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+  );
+  return response.data;
+}
+
+export const deleteCategory = async (id: string) => {
+  // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
+  const response = await api.delete(
+    `/blog-category/${id}`,
+    {
+      headers: {
+        Accept: "application/json", 
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}
+
+
 
 
 
@@ -411,89 +498,6 @@ export const ChangeFeedbackStatus = async ({
 
 
 
-export const categoryCreate = async (payload: any) => {
-  // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
-  const response = await api.post(
-    "/blog-category",
-    payload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    }
-  );
-  return response.data;
-};
-
-
-export const categoryFetchList = async ({ page = 1, search = "" } = {}) => {
-  // const token =
-    // JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
-
-  const response = await api.get(`/blog-categories?`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    params: {
-      page,
-      name: search || undefined, // will exclude `name` if search is empty
-    },
-  });
-
-  return response.data;
-};
-
-export const fetchAllCategories = async () => {
-  const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
-  const res = await api.get("/category/list?per_page=1000", {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  return res.data;
-};
-
-
-
-export const fetchCategory = async (slugOrId: string) => {
- 
-
-  const response = await api.get(`/blog-category/${slugOrId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data;
-};
-
-
-export const updateCategory = async (slugOrId: string, payload: any) => {
-  // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
-  console.log("payloag=",payload)
-  const response = await api.put( 
-    `/blog-category/${slugOrId}`,
-    payload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    }
-  );
-  return response.data;
-}
-
-export const deleteCategory = async (id: string) => {
-  // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
-  const response = await api.delete(
-    `/blog-category/${id}`,
-    {
-      headers: {
-        Accept: "application/json", 
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response.data;
-}
 
 //end of Category APIs
 

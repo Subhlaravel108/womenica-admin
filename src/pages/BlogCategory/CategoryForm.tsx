@@ -104,10 +104,10 @@ const BlogCategoryForm = () => {
       try {
         const res = await api.post(
           "/upload-image",
-          formDataData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
+          formDataData
+          // {
+          //   headers: { "Content-Type": "multipart/form-data" },
+          // }
         );
   
         if (res.data.success) {
