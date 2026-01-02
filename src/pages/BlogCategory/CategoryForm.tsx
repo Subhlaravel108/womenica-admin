@@ -29,7 +29,7 @@ import api, {
 import { ArrowLeft } from "lucide-react";
 import ReactQuill from "react-quill";
 
-const CategoryForm = () => {
+const BlogCategoryForm = () => {
   const { id } = useParams<{ id?: string }>();
   const isEdit = Boolean(id);
   
@@ -446,4 +446,4 @@ const CategoryFormSkeleton = () => (
   </Card>
 );
 
-export default CategoryForm;
+export default BlogCategoryForm;

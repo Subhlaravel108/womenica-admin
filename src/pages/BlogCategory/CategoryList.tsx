@@ -36,7 +36,7 @@ const CategoriesSkeleton = () => (
   </div>
 );
 
-const CategoryList = () => {
+const BlogCategoryList = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTitle, setSearchTitle] = useState("");
@@ -236,4 +236,4 @@ const CategoryList = () => {
   );
 };
 
-export default CategoryList;
+export default BlogCategoryList;
