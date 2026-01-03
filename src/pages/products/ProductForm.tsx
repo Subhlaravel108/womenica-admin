@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
-import { fetchProduct, createProduct, updateProduct, productCategoryFetchList } from "@/lib/api";
+import { fetchProduct, createProduct, updateProduct, productCategoryFetchList, productActiveCategoryFetchList } from "@/lib/api";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -54,21 +54,8 @@ const ProductForm = () => {
     const loadCategories = async () => {
       setLoadingCategories(true);
       try {
-        const res = await productCategoryFetchList({ page: 1, search: "" });
-        // Handle different response structures
-        if (res.success) {
-          if (Array.isArray(res.data)) {
-            setProductCategories(res.data);
-          } else if (res.data && Array.isArray(res.data.data)) {
-            setProductCategories(res.data.data);
-          } else if (Array.isArray(res)) {
-            setProductCategories(res);
-          }
-        } else if (Array.isArray(res)) {
-          setProductCategories(res);
-        } else if (res.data && Array.isArray(res.data)) {
-          setProductCategories(res.data);
-        }
+        const res = await productActiveCategoryFetchList();
+           setProductCategories(res.data);
       } catch (error) {
         console.error("Failed to load product categories:", error);
         toast.error("Failed to load product categories");

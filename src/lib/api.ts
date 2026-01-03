@@ -48,6 +48,18 @@ export const productCategoryFetchList = async ({ page = 1, search = "" } = {}) =
 
   return response.data;
 };
+export const productActiveCategoryFetchList = async () => {
+  // const token =
+    // JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
+
+  const response = await api.get(`/product-categories/active-categories`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
 
 
 export const productDeleteCategory = async (id: string) => {
@@ -596,6 +608,14 @@ export const fetchBlogCategory=async({page=1, search=""}={})=>{
   params.append("page",String(page))
   if(search) params.append("search",search)
   const response=await api.get(`/blog-categories?${params.toString()}`,{
+    headers:{
+       Authorization:`Bearer ${token}`
+    }
+})
+   return response.data
+}
+export const fetchActiveBlogCategory=async({page=1, search=""}={})=>{
+  const response=await api.get(`/blogs/active-categories`,{
     headers:{
        Authorization:`Bearer ${token}`
     }

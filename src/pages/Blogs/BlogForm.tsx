@@ -25,7 +25,7 @@ import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { fetchBlog, createBlog, updateBlog, uploadImage, fetchBlogCategory } from "@/lib/api"; // <-- import your API
+import { fetchBlog, createBlog, updateBlog, uploadImage, fetchBlogCategory, fetchActiveBlogCategory } from "@/lib/api"; // <-- import your API
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -73,7 +73,7 @@ const BlogForm = () => {
     const fetchCategory = async () => {
       try {
 
-        const res = await fetchBlogCategory()
+        const res = await fetchActiveBlogCategory()
         setCategory(res.data)
         //  console.log()
         console.log("category=", res)
@@ -151,6 +151,7 @@ const BlogForm = () => {
     setUploading(true)
     try {
       const url = await uploadImage(file);
+      console.log("image url=",url)
       setBlog(prev => ({ ...prev, featuredImage: url }));
       setErrors((prevErrors) => ({ ...prevErrors, featuredImage: "" }));
       toast.success("Image uploaded!");
