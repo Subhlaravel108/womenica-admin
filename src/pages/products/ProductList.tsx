@@ -189,7 +189,17 @@ const ProductList = () => {
                           </div>
                         )}
                       </TableCell>
-                      <TableCell className="font-medium">{product.title || "-"}</TableCell>
+                    <TableCell className="font-medium  align-middle">
+  <a
+    href={product.amazon_link}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block"
+  >
+    {product.title || "-"}
+  </a>
+</TableCell>
+
                       <TableCell>{product.sku || "-"}</TableCell>
                       <TableCell>
                         {product.product_price 

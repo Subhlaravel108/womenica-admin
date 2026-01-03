@@ -34,7 +34,6 @@ const ProductForm = () => {
     meta_title: "",
     meta_keywords: "",
     meta_description: "",
-    slug: "",
     sku: "",
     image_url: "",
     product_price: "",
@@ -81,7 +80,6 @@ const ProductForm = () => {
             meta_title: data.meta_title || "",
             meta_keywords: data.meta_keywords || "",
             meta_description: data.meta_description || "",
-            slug: data.slug || "",
             sku: data.sku || "",
             image_url: data.image_url || "",
             product_price: data.product_price || "",
@@ -131,7 +129,6 @@ const ProductForm = () => {
     if (!product.meta_title.trim()) newErrors.meta_title = "Meta title is required";
     if (!product.meta_keywords.trim()) newErrors.meta_keywords = "Meta keywords are required";
     if (!product.meta_description.trim()) newErrors.meta_description = "Meta description is required";
-    if (!product.slug.trim()) newErrors.slug = "Slug is required";
     if (!product.sku.trim()) newErrors.sku = "SKU is required";
     if (!product.image_url.trim()) newErrors.image_url = "Image URL is required";
     if (!product.product_price || (typeof product.product_price === 'string' && !product.product_price.trim()) || (typeof product.product_price === 'number' && isNaN(product.product_price))) newErrors.product_price = "Product price is required";
@@ -150,7 +147,6 @@ const ProductForm = () => {
       meta_title: product.meta_title,
       meta_keywords: product.meta_keywords,
       meta_description: product.meta_description,
-      slug: product.slug,
       sku: product.sku,
       image_url: product.image_url,
       product_price: product.product_price,
@@ -218,7 +214,7 @@ const ProductForm = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label htmlFor="slug" className="text-sm font-medium">
                   Slug *
                 </label>
@@ -230,7 +226,7 @@ const ProductForm = () => {
                   placeholder="Enter product slug"
                 />
                 {errors.slug && <p className="text-sm text-red-500">{errors.slug}</p>}
-              </div>
+              </div> */}
 
               <div className="space-y-2">
                 <label htmlFor="sku" className="text-sm font-medium">
