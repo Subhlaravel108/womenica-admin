@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { fetchProducts, deleteProduct } from "@/lib/api";
 import Swal from "sweetalert2";
 import ProductsExcelUpload from "@/components/productsExcelUpload";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const ProductSkeleton = () => (
   <div className="p-4 space-y-4">
@@ -48,6 +49,7 @@ const ProductList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
   // ✅ Fetch Products
   const loadProducts = async (search = "", pageNum = 1) => {
@@ -94,7 +96,7 @@ const ProductList = () => {
     setPage(1);
   };
 
-  // ✅ Handle delete
+  // ✅ Handle single delete
   const handleDeleteProduct = async (id: string) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -108,14 +110,96 @@ const ProductList = () => {
 
     if (result.isConfirmed) {
       try {
-        await deleteProduct(id);
+        await deleteProduct({ id });
         setProducts(products.filter((prod) => prod._id !== id));
         toast.success("Product deleted successfully");
+        loadProducts(debouncedSearch, page);
       } catch {
         toast.error("Failed to delete product");
       }
     }
   };
+
+  // ✅ Handle multiple delete
+  const handleDeleteSelected = async () => {
+    if (selectedProducts.length === 0) {
+      toast.error("Please select products to delete");
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `You are about to delete ${selectedProducts.length} product(s). This action cannot be undone.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete them!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct({ ids: selectedProducts });
+        setSelectedProducts([]);
+        toast.success(`${selectedProducts.length} product(s) deleted successfully`);
+        loadProducts(debouncedSearch, page);
+      } catch {
+        toast.error("Failed to delete products");
+      }
+    }
+  };
+
+  // ✅ Handle delete all
+  const handleDeleteAll = async () => {
+    const result = await Swal.fire({
+      title: "Are you absolutely sure?",
+      text: `You are about to delete ALL ${total} products. This action cannot be undone!`,
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete all!",
+      input: "text",
+      inputPlaceholder: "Type 'DELETE ALL' to confirm",
+      inputValidator: (value) => {
+        if (value !== "DELETE ALL") {
+          return "You must type 'DELETE ALL' to confirm";
+        }
+      },
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct({ deleteAll: true });
+        setSelectedProducts([]);
+        toast.success("All products deleted successfully");
+        loadProducts(debouncedSearch, page);
+      } catch {
+        toast.error("Failed to delete all products");
+      }
+    }
+  };
+
+  // ✅ Handle checkbox selection
+  const handleSelectProduct = (productId: string) => {
+    setSelectedProducts((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
+    );
+  };
+
+  // ✅ Handle select all
+  const handleSelectAll = () => {
+    if (selectedProducts.length === products.length) {
+      setSelectedProducts([]);
+    } else {
+      setSelectedProducts(products.map((p) => p._id));
+    }
+  };
+
+  // ✅ Check if all products are selected
+  const isAllSelected = products.length > 0 && selectedProducts.length === products.length;
 
   return (
     <div className="space-y-6">
@@ -134,15 +218,37 @@ const ProductList = () => {
       </div>
 
       <Card className="p-4">
-        {/* Search Bar */}
-        <div className="flex items-center mb-4">
-          <Search className="w-5 h-5 text-gray-500 mr-2" />
-          <Input
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={handleSearch}
-            className="max-w-sm"
-          />
+        {/* Search Bar and Action Buttons */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <Search className="w-5 h-5 text-gray-500 mr-2" />
+            <Input
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={handleSearch}
+              className="max-w-sm"
+            />
+          </div>
+          {selectedProducts.length > 0 && (
+            <div className="flex gap-2">
+              <Button
+                variant="destructive"
+                onClick={handleDeleteSelected}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Selected ({selectedProducts.length})
+              </Button>
+            </div>
+          )}
+          {total > 0 && (
+            <Button
+              variant="destructive"
+              onClick={handleDeleteAll}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete All ({total})
+            </Button>
+          )}
         </div>
 
         {/* Table */}
@@ -153,6 +259,12 @@ const ProductList = () => {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-[50px]">
+                    <Checkbox
+                      checked={isAllSelected}
+                      onCheckedChange={handleSelectAll}
+                    />
+                  </TableHead>
                   <TableHead className="w-[80px]">#</TableHead>
                   <TableHead>Image</TableHead>
                   <TableHead>Title</TableHead>
@@ -166,13 +278,19 @@ const ProductList = () => {
               <TableBody>
                 {products.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
+                    <TableCell colSpan={8} className="text-center py-8">
                       No products found.
                     </TableCell>
                   </TableRow>
                 ) : (
                   products.map((product, idx) => (
                     <TableRow key={product._id}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedProducts.includes(product._id)}
+                          onCheckedChange={() => handleSelectProduct(product._id)}
+                        />
+                      </TableCell>
                       <TableCell className="font-medium">
                         {(page - 1) * limit + (idx + 1)}
                       </TableCell>

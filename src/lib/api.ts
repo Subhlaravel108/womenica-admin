@@ -2,8 +2,8 @@ import axios from "axios";
 // import { URLSearchParams } from "url";
 
 const api = axios.create({
-  // baseURL: "http://localhost:3001/api",
-  baseURL: "https://womenica-api.onrender.com/api",
+  baseURL: "http://localhost:3001/api",
+  // baseURL: "https://womenica-api.onrender.com/api",
 });
 
 export default api;
@@ -169,12 +169,15 @@ export const fetchProducts=async({page=1,search=""}={})=>{
 }
 
 
-export const deleteProduct=async(SlugOrId:string)=>{
-  const response=await api.delete(`/product/delete/${SlugOrId}`,{
+export const deleteProduct=async(payload?:{id?:string, ids?:string[], deleteAll?:boolean})=>{
+  const response=await api.delete(`/product/delete`,{
     headers:{
-      Authorization:`Bearer ${token}`
-    }
+      Authorization:`Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    data: payload || {}
   })
+  return response.data;
 }
 
 
