@@ -169,7 +169,7 @@ const AdminSidebar = () => {
     // { icon: StarIcon, label: "Feedbacks", to: "/feedbacks" },
     // { icon: Contact, label: "Contacts", to: "/contacts" },
     { icon: Settings, label: "Settings", to: "/settings" },
-    // { icon: Download, label: "Download JSON", to: "/downloads" },
+    { icon: Download, label: "Download JSON", to: "/downloads" },
     { icon: LogIn, label: "Logout", to: "/logout" },
   ];
 

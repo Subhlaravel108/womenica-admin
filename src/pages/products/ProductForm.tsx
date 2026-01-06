@@ -23,6 +23,8 @@ import { ArrowLeft } from "lucide-react";
 import { fetchProduct, createProduct, updateProduct, productCategoryFetchList, productActiveCategoryFetchList } from "@/lib/api";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const ProductForm = () => {
   const { slug } = useParams();
@@ -41,6 +43,8 @@ const ProductForm = () => {
     productCategoryId: "",
     showingOnHomePage: false,
     status: "active",
+    inTrending: false,
+    isBestSeller: false,
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +91,8 @@ const ProductForm = () => {
             productCategoryId: data.productCategoryId || data.product_category_id || "",
             showingOnHomePage: data.showingOnHomePage || false,
             status: data.status || "active",
+            inTrending: data.inTrending || false,
+            isBestSeller: data.isBestSeller || false,
           });
         } catch (error) {
           toast.error("Failed to fetch product details.");
@@ -154,6 +160,8 @@ const ProductForm = () => {
       showingOnHomePage: product.showingOnHomePage,
       description: product.description,
       status: product.status,
+      inTrending: product.inTrending || false,
+      isBestSeller: product.isBestSeller || false,
     };
 
     try {
@@ -410,6 +418,43 @@ const ProductForm = () => {
                                   </SelectContent>
                                 </Select>
                               </div>
+            </div>
+
+            {/* Product Flags */}
+            <div className="space-y-4 border-t pt-6">
+              <h3 className="text-lg font-medium">Product Flags</h3>
+              
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="inTrending"
+                  checked={product.inTrending}
+                  onCheckedChange={(checked) => {
+                    setProduct(prev => ({ ...prev, inTrending: checked === true }));
+                  }}
+                />
+                <Label
+                  htmlFor="inTrending"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                >
+                  In Trending
+                </Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="isBestSeller"
+                  checked={product.isBestSeller}
+                  onCheckedChange={(checked) => {
+                    setProduct(prev => ({ ...prev, isBestSeller: checked === true }));
+                  }}
+                />
+                <Label
+                  htmlFor="isBestSeller"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                >
+                  Is Best Seller
+                </Label>
+              </div>
             </div>
 
             <CardFooter className="flex justify-between px-0 pt-6">

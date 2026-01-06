@@ -3,8 +3,8 @@ import { Loader } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-const BASE_URL = "https://india-thailand-api-8.onrender.com";
-// const BASE_URL = " http://127.0.0.1:3001";
+// const BASE_URL = "https://india-thailand-api-8.onrender.com";
+const BASE_URL = " http://127.0.0.1:3001";
 
 const DownloadDataPage = () => {
   const [loadingIndex, setLoadingIndex] = useState(null);
@@ -51,53 +51,53 @@ const DownloadDataPage = () => {
 
   const items = [
     {
-      title: "Home Page Destinations",
-      description: "Download home page destinations JSON.",
-      url: "/api/destinations?download=true&type=homepage&limit=6",
-      file: "destinations_homepage.json",
+      title: "Home Page Categories",
+      description: "Download home page categories JSON.",
+      url: "/api/product-categories?download=true&type=homepage&limit=8",
+      file: "categories_homepage.json",
     },
     {
-      title: "Home Page tour Packages",
-      description: "Download home page tour packages JSON.",
-      url: "/api/package?download=true&type=homepage&limit=3",
-      file: "packages_homepage.json",
+      title: "Home Page featured products",
+      description: "Download home page featured product JSON.",
+      url: "/api/products?download=true&type=homepage&limit=8",
+      file: "featuredProducts_homepage.json",
+    },
+    // {
+    //   title: "Home Page Blog",
+    //   description: "Download home page blog JSON.",
+    //   url: "/api/blog?download=true&type=homepage&limit=3",
+    //   file: "blog_homepage.json",
+    // },
+    {
+      title: "All Products",
+      description: "Download all products JSON.",
+      url: "/api/products?download=true",
+      file: "all_products.json",
     },
     {
-      title: "Home Page Blog",
-      description: "Download home page blog JSON.",
-      url: "/api/blog?download=true&type=homepage&limit=3",
-      file: "blog_homepage.json",
+      title: "All Products categories",
+      description: "Download All products categories JSON.",
+      url: "/api/product-categories?download=true",
+      file: "all_categories.json",
     },
-    {
-      title: "All Destinations",
-      description: "Download all destinations JSON.",
-      url: "/api/destinations?download=true",
-      file: "all_destinations.json",
-    },
-    {
-      title: "All tour Packages",
-      description: "Download All tour packages JSON.",
-      url: "/api/package?download=true",
-      file: "all_packages.json",
-    },
-     {
-      title: "All Blog",
-      description: "Download all blog JSON.",
-      url: "/api/blog?download=true",
-      file: "all_blog.json",
-    },
-     {
-      title: "All Tour",
-      description: "Download all tour JSON.",
-      url: "/api/tours?download=true",
-      file: "all_tours.json",
-    },
-   {
-      title: "Feedbacks",
-      description: "Download approved JSON.",
-      url: "/api/feedback-list?download=true",
-      file: "feedbacks.json",
-    },
+    //  {
+    //   title: "All Blog",
+    //   description: "Download all blog JSON.",
+    //   url: "/api/blog?download=true",
+    //   file: "all_blog.json",
+    // },
+    //  {
+    //   title: "All Tour",
+    //   description: "Download all tour JSON.",
+    //   url: "/api/tours?download=true",
+    //   file: "all_tours.json",
+    // },
+  //  {
+  //     title: "Feedbacks",
+  //     description: "Download approved JSON.",
+  //     url: "/api/feedback-list?download=true",
+  //     file: "feedbacks.json",
+  //   },
 
   ];
 

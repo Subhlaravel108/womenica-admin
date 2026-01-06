@@ -2,8 +2,8 @@ import axios from "axios";
 // import { URLSearchParams } from "url";
 
 const api = axios.create({
-  // baseURL: "http://localhost:3001/api",
-  baseURL: "https://womenica-api.onrender.com/api",
+  baseURL: "http://localhost:3001/api",
+  // baseURL: "https://womenica-api.onrender.com/api",
 });
 
 export default api;
@@ -167,6 +167,47 @@ export const fetchProducts=async({page=1,search=""}={})=>{
   });
   return response.data
 }
+
+// Download APIs - direct from API
+export const downloadHomePageProducts = async () => {
+  const response = await api.get(`/products?showingOnHomePage=true&download=true`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: 'blob', // Handle blob response for file download
+  });
+  return response.data;
+};
+
+export const downloadFeaturedProducts = async () => {
+  const response = await api.get(`/products?featured=true&download=true`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: 'blob', // Handle blob response for file download
+  });
+  return response.data;
+};
+
+export const downloadProductListing = async () => {
+  const response = await api.get(`/products?download=true`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: 'blob', // Handle blob response for file download
+  });
+  return response.data;
+};
+
+export const downloadCategories = async () => {
+  const response = await api.get(`/product-categories/active-categories?download=true`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: 'blob', // Handle blob response for file download
+  });
+  return response.data;
+};
 
 
 export const deleteProduct=async(payload?:{id?:string, ids?:string[], deleteAll?:boolean})=>{
