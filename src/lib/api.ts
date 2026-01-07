@@ -2,8 +2,8 @@ import axios from "axios";
 // import { URLSearchParams } from "url";
 
 const api = axios.create({
-  // baseURL: "http://localhost:3001/api",
-  baseURL: "https://womenica-api.onrender.com/api",
+  baseURL: "http://localhost:3001/api",
+  // baseURL: "https://womenica-api.onrender.com/api",
 });
 
 export default api;

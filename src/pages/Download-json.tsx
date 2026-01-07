@@ -3,8 +3,8 @@ import { Loader } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-// const BASE_URL = "https://india-thailand-api-8.onrender.com";
-const BASE_URL = " http://127.0.0.1:3001";
+const BASE_URL = "https://india-thailand-api-8.onrender.com";
+// const BASE_URL = " http://127.0.0.1:3001";
 
 const DownloadDataPage = () => {
   const [loadingIndex, setLoadingIndex] = useState(null);
@@ -80,12 +80,12 @@ const DownloadDataPage = () => {
       url: "/api/product-categories?download=true",
       file: "all_categories.json",
     },
-    //  {
-    //   title: "All Blog",
-    //   description: "Download all blog JSON.",
-    //   url: "/api/blog?download=true",
-    //   file: "all_blog.json",
-    // },
+     {
+      title: "All Trending Products",
+      description: "Download all trending products JSON.",
+      url: "/api/product/inTrending?download=true&type=all",
+      file: "all_trending_products.json",
+    },
     //  {
     //   title: "All Tour",
     //   description: "Download all tour JSON.",
