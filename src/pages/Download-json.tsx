@@ -3,7 +3,7 @@ import { Loader } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-const BASE_URL = "https://india-thailand-api-8.onrender.com";
+const BASE_URL = "https://womenica-api.onrender.com";
 // const BASE_URL = " http://127.0.0.1:3001";
 
 const DownloadDataPage = () => {
