@@ -1,6 +1,7 @@
 "use client";
+import api, { fetchAllCategories, productActiveCategoryFetchList } from "@/lib/api";
 import { Loader } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const BASE_URL = "https://womenica-api.onrender.com";
@@ -8,6 +9,7 @@ const BASE_URL = "https://womenica-api.onrender.com";
 
 const DownloadDataPage = () => {
   const [loadingIndex, setLoadingIndex] = useState(null);
+  const [productCategories, setProductCategories] = useState([]);
 
   const downloadFile = async (url, filename, index) => {
     try {
@@ -49,7 +51,23 @@ const DownloadDataPage = () => {
     }
   };
 
-  const items = [
+  const fetchProductCategories = async () => {
+    try {
+      const response = await productActiveCategoryFetchList();
+      setProductCategories(response.data || []);
+      console.log("Product Categories:", response.data);
+    } catch (error) {
+      console.error("Error fetching product categories:", error);
+      toast.error("Failed to fetch product categories");
+    }
+  };
+
+  useEffect(() => {
+    fetchProductCategories();
+  }, []);
+
+  // Base items array
+  const baseItems = [
     {
       title: "Home Page Categories",
       description: "Download home page categories JSON.",
@@ -62,12 +80,6 @@ const DownloadDataPage = () => {
       url: "/api/products?download=true&type=homepage&limit=8",
       file: "featuredProducts_homepage.json",
     },
-    // {
-    //   title: "Home Page Blog",
-    //   description: "Download home page blog JSON.",
-    //   url: "/api/blog?download=true&type=homepage&limit=3",
-    //   file: "blog_homepage.json",
-    // },
     {
       title: "All Products",
       description: "Download all products JSON.",
@@ -80,26 +92,24 @@ const DownloadDataPage = () => {
       url: "/api/product-categories?download=true",
       file: "all_categories.json",
     },
-     {
+    {
       title: "All Trending Products",
       description: "Download all trending products JSON.",
       url: "/api/product/inTrending?download=true&type=all",
       file: "all_trending_products.json",
     },
-    //  {
-    //   title: "All Tour",
-    //   description: "Download all tour JSON.",
-    //   url: "/api/tours?download=true",
-    //   file: "all_tours.json",
-    // },
-  //  {
-  //     title: "Feedbacks",
-  //     description: "Download approved JSON.",
-  //     url: "/api/feedback-list?download=true",
-  //     file: "feedbacks.json",
-  //   },
-
   ];
+
+  // Category-based items
+  const categoryItems = productCategories.map((cat) => ({
+    title: `Products in Category: ${cat.title || cat.name || "Unknown"}`,
+    description: `Download products JSON in category: ${cat.title || cat.name || "Unknown"}.`,
+    url: `/api/products/download/${cat.title}?download=true&categoryName=${cat.title || cat.id}`,
+    file: `products_in_category_${cat.slug || cat._id || cat.id}.json`,
+  }));
+
+  // Combine base items with category items
+  const items = [...baseItems, ...categoryItems];
 
   return (
     <div className="h-auto bg-gray-100 flex  justify-center p-6">
