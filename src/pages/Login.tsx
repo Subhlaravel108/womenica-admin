@@ -35,6 +35,7 @@ try {
   console.log("Logged in user:", role); // Debugging line
   if (role === "admin" || role === "super admin") {
     localStorage.setItem("isAuthenticated", "true");
+    localStorage.setItem("token", user.token);
     localStorage.setItem("user", JSON.stringify(user));
     
     toast.success("Login successful!");

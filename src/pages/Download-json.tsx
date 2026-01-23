@@ -98,6 +98,12 @@ const DownloadDataPage = () => {
       url: "/api/product/inTrending?download=true&type=all",
       file: "all_trending_products.json",
     },
+    {
+      title: "All Best Seller Products",
+      description: "Download all best seller products JSON.",
+      url: "/api/products/bestSellers?download=true&type=all",
+      file: "all_best_seller_products.json",
+    },
   ];
 
   // Category-based items

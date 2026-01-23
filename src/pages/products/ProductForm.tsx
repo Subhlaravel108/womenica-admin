@@ -458,7 +458,7 @@ const ProductForm = () => {
             </div>
 
             <CardFooter className="flex justify-between px-0 pt-6">
-              <Button variant="outline" onClick={() => navigate("/product")}>
+              <Button variant="outline" onClick={() => navigate("/products")}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>

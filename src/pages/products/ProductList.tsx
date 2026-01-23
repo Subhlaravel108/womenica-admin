@@ -267,7 +267,8 @@ const ProductList = () => {
                   </TableHead>
                   <TableHead className="w-[80px]">#</TableHead>
                   <TableHead>Image</TableHead>
-                  <TableHead>Title</TableHead>
+                  <TableHead >Title</TableHead>
+                  <TableHead>Amazon Link</TableHead>
                   <TableHead>SKU</TableHead>
                   <TableHead>Price</TableHead>
                   <TableHead>Status</TableHead>
@@ -307,14 +308,24 @@ const ProductList = () => {
                           </div>
                         )}
                       </TableCell>
-                    <TableCell className="font-medium  align-middle">
+                    <TableCell className="font-medium  align-middle max-w-[200px]">
+  <a
+    href={`https://www.womenica.com/product/${product.slug} `}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block"
+    >
+    {product.title || "-"}
+  </a>
+</TableCell>
+                    <TableCell className="font-medium  align-middle max-w-[200px]">
   <a
     href={product.amazon_link}
     target="_blank"
     rel="noopener noreferrer"
-    className="block"
+    className="text-blue-600 hover:underline block font-medium"
   >
-    {product.title || "-"}
+    Amazon Link
   </a>
 </TableCell>
 

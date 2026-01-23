@@ -28,6 +28,7 @@ const Logout = () => {
       } finally {
         localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         toast.success("Logged out successfully");
         navigate("/");
       }

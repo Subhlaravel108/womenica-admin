@@ -2,13 +2,39 @@ import axios from "axios";
 // import { URLSearchParams } from "url";
 
 const api = axios.create({
-  // baseURL: "http://localhost:3001/api",
-  baseURL: "https://womenica-api.onrender.com/api",
+  baseURL: "http://localhost:3001/api",
+  // baseURL: "https://womenica-api.onrender.com/api",
 });
+
+api.interceptors.request.use((config => {
+  const token = localStorage.getItem("token");
+  if (token ) {
+
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}));
+
+api.interceptors.response.use(
+  response => response,
+  error => {
+    // Global error handling
+    if (error.response) {
+      // Handle specific status codes
+      if (error.response.status === 401) {
+             localStorage.removeItem("token");
+             localStorage.removeItem("user");
+             localStorage.removeItem("isAuthenticated");
+              window.location.href = "/"; // Redirect to login page
+      }
+    }
+    return Promise.reject(error);
+  }
+)
 
 export default api;
 
-  const token = JSON.parse(localStorage.getItem("user") || "{}")?.token || "";
+  // const token = JSON.parse(localStorage.getItem("user") || "{}")?.token || "";
 
 // Login Apis 
 
@@ -37,9 +63,6 @@ export const productCategoryFetchList = async ({ page = 1, search = "" } = {}) =
     // JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
 
   const response = await api.get(`/product-categories?`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
     params: {
       page,
       search: search || undefined, // will exclude `name` if search is empty
@@ -53,9 +76,7 @@ export const productActiveCategoryFetchList = async () => {
     // JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
 
   const response = await api.get(`/product-categories/active-categories`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  
   });
 
   return response.data;
@@ -70,7 +91,7 @@ export const productDeleteCategory = async (id: string) => {
     {
       headers: {
         Accept: "application/json", 
-        Authorization: `Bearer ${token}`,
+        
       },
     }
   );
@@ -84,9 +105,7 @@ export const productCategoryCreate = async (payload: any) => {
     "/product-categories/add",
     payload,
     {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+    
     }
   );
   return response.data;
@@ -97,9 +116,7 @@ export const fetchProductCategory = async (slugOrId: string) => {
  
 
   const response = await api.get(`/product-categories/${slugOrId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+   
   });
 
   return response.data;
@@ -113,9 +130,7 @@ export const updateProductCategory = async (slugOrId: string, payload: any) => {
     `/product-categories/update/${slugOrId}`,
     payload,
     {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+     
     }
   );
   return response.data;
@@ -128,9 +143,7 @@ export const updateProductCategory = async (slugOrId: string, payload: any) => {
 
 export const fetchProduct=async(SlugOrId:string)=>{
     const response=await api.get(`/product/${SlugOrId}`,{
-      headers:{
-        Authorization:`Bearer ${token}`
-      }
+     
     })
     return response.data
 }
@@ -138,18 +151,14 @@ export const fetchProduct=async(SlugOrId:string)=>{
 
 export const createProduct=async(payload:any)=>{
   const response=await api.post("/products/add",payload,{
-    headers:{
-      Authorization:`Bearer ${token}`
-    }
+   
   })
   return response.data
 }
 
 export const updateProduct=async(SlugOrId:string,payload:any)=>{
   const response=await api.put(`/product/update/${SlugOrId}`,payload,{
-    headers:{
-      Authorization:`Bearer ${token}`
-    }
+   
   })
   return response.data
 }
@@ -157,9 +166,7 @@ export const updateProduct=async(SlugOrId:string,payload:any)=>{
 
 export const fetchProducts=async({page=1,search=""}={})=>{
       const response = await api.get(`/products?`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+   
     params: {
       page,
       search: search || undefined, // will exclude `name` if search is empty
@@ -171,9 +178,7 @@ export const fetchProducts=async({page=1,search=""}={})=>{
 // Download APIs - direct from API
 export const downloadHomePageProducts = async () => {
   const response = await api.get(`/products?showingOnHomePage=true&download=true`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+   
     responseType: 'blob', // Handle blob response for file download
   });
   return response.data;
@@ -181,9 +186,7 @@ export const downloadHomePageProducts = async () => {
 
 export const downloadFeaturedProducts = async () => {
   const response = await api.get(`/products?featured=true&download=true`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+   
     responseType: 'blob', // Handle blob response for file download
   });
   return response.data;
@@ -191,9 +194,7 @@ export const downloadFeaturedProducts = async () => {
 
 export const downloadProductListing = async () => {
   const response = await api.get(`/products?download=true`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+   
     responseType: 'blob', // Handle blob response for file download
   });
   return response.data;
@@ -201,9 +202,7 @@ export const downloadProductListing = async () => {
 
 export const downloadCategories = async () => {
   const response = await api.get(`/product-categories/active-categories?download=true`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  
     responseType: 'blob', // Handle blob response for file download
   });
   return response.data;
@@ -213,7 +212,7 @@ export const downloadCategories = async () => {
 export const deleteProduct=async(payload?:{id?:string, ids?:string[], deleteAll?:boolean})=>{
   const response=await api.delete(`/product/delete`,{
     headers:{
-      Authorization:`Bearer ${token}`,
+     
       'Content-Type': 'application/json'
     },
     data: payload || {}
@@ -229,11 +228,7 @@ export const categoryCreate = async (payload: any) => {
   const response = await api.post(
     "/blog-category",
     payload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    }
+   
   );
   return response.data;
 };
@@ -244,12 +239,10 @@ export const categoryFetchList = async ({ page = 1, search = "" } = {}) => {
     // JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
 
   const response = await api.get(`/blog-categories?`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+   
     params: {
       page,
-      name: search || undefined, // will exclude `name` if search is empty
+      search: search || undefined, // will exclude `name` if search is empty
     },
   });
 
@@ -257,9 +250,9 @@ export const categoryFetchList = async ({ page = 1, search = "" } = {}) => {
 };
 
 export const fetchAllCategories = async () => {
-  const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
+  // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
   const res = await api.get("/category/list?per_page=1000", {
-    headers: { Authorization: `Bearer ${token}` }
+   
   });
   return res.data;
 };
@@ -270,9 +263,7 @@ export const fetchCategory = async (slugOrId: string) => {
  
 
   const response = await api.get(`/blog-category/${slugOrId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  
   });
 
   return response.data;
@@ -286,9 +277,7 @@ export const updateCategory = async (slugOrId: string, payload: any) => {
     `/blog-category/${slugOrId}`,
     payload,
     {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+   
     }
   );
   return response.data;
@@ -301,7 +290,7 @@ export const deleteCategory = async (id: string) => {
     {
       headers: {
         Accept: "application/json", 
-        Authorization: `Bearer ${token}`,
+       
       },
     }
   );
@@ -457,7 +446,7 @@ export const fetchUsers = async ({ page = 1, search = "" } = {}) => {
   let url = `/users`;
   if (search) url += `&search=${encodeURIComponent(search)}`;
   const res = await api.get(url, {
-    headers: { Authorization: `Bearer ${token}` }
+   
   });
   return res.data;
 };
@@ -474,11 +463,7 @@ export const ChangeUserStatus = async ({
   const response = await api.post(
     `/auth/user/status/${user_id}`,
     { status },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    
   );
 
   return response.data;
@@ -489,9 +474,7 @@ export const ChangeUserStatus = async ({
 
 export const fetchAllContacts=async({page=1,search=""}={})=>{
   const res=await api.get("/contacts-list",{
-    headers:{
-      Authorization:`Bearer ${token}`
-    },
+    
     params:{
       page,
       search 
@@ -501,9 +484,7 @@ export const fetchAllContacts=async({page=1,search=""}={})=>{
 }
 export const fetchAllBookings=async({page=1,search=""}={})=>{
   const res=await api.get("/bookings-list",{
-    headers:{
-      Authorization:`Bearer ${token}`
-    },
+   
     params:{
       page,
       search 
@@ -513,9 +494,7 @@ export const fetchAllBookings=async({page=1,search=""}={})=>{
 }
 export const fetchFeedbacks=async({page=1,search=""}={})=>{
   const res=await api.get("/feedback-list",{
-    headers:{
-      Authorization:`Bearer ${token}`
-    },
+   
     params:{
       page,
       search 
@@ -536,11 +515,7 @@ export const ChangeFeedbackStatus = async ({
   const response = await api.post(
     `/feedback/status/${feedback_id}`,
     { status },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  
   );
 
   return response.data;
@@ -565,9 +540,7 @@ export const ChangeFeedbackStatus = async ({
 
 export const fetchDestinations=async({page=1,search=""}={})=>{
       const response = await api.get(`/products?`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+ 
     params: {
       page,
       search: search || undefined, // will exclude `name` if search is empty
@@ -586,9 +559,7 @@ export const fetchBlogs = async ({ page = 1, search = "" } = {}) => {
   if (search) params.append("search", search); // search by title
  
   const response = await api.get(`/blog?${params.toString()}`,{
-    headers:{
-      Authorization: `Bearer ${token}`
-    }
+   
   });
   return response.data;
 };
@@ -610,9 +581,7 @@ export const createBlog = async (payload: any) => {
     "/blog",
     payload,
     {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+   
     }
   );
   return response.data;
@@ -625,9 +594,7 @@ export const updateBlog = async (slugOrId: string, payload: any) => {
     `/blog/${slugOrId}`,
     payload,
     {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+   
     }
   );
   return response.data;
@@ -640,7 +607,7 @@ export const deleteBlog = async (slug: string) => {
     {
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${token}`,
+        
       },
     }
   );
@@ -652,17 +619,13 @@ export const fetchBlogCategory=async({page=1, search=""}={})=>{
   params.append("page",String(page))
   if(search) params.append("search",search)
   const response=await api.get(`/blog-categories?${params.toString()}`,{
-    headers:{
-       Authorization:`Bearer ${token}`
-    }
+   
 })
    return response.data
 }
 export const fetchActiveBlogCategory=async({page=1, search=""}={})=>{
   const response=await api.get(`/blogs/active-categories`,{
-    headers:{
-       Authorization:`Bearer ${token}`
-    }
+  
 })
    return response.data
 }
@@ -673,27 +636,21 @@ export const fetchTourPackages=async({page=1, search=""}={})=>{
   if(search) params.append("search",search)
     // params.append("limit","1")
   const response=await api.get(`/package?${params.toString()}`,{
-    headers:{
-       Authorization:`Bearer ${token}`
-    }
+ 
 })
    return response.data
 }
 
 export const fetchTourPackage=async(slug:string)=>{
   const response=await api.get(`package/detail/${slug}`,{
-    headers:{
-      Authorization:`Bearer ${token}`
-    }
+  
   })
   return response.data
 }
 
 export const createTourPackage=async(payload:any)=>{
   const response=await api.post("/package",payload,{
-    headers:{
-        Authorization:`Bearer ${token}`
-    }
+ 
 
   })
   return response.data
@@ -704,9 +661,7 @@ export const updateTourPackage = async (slugOrId: string, payload: any) => {
     `/package/${slugOrId}`,
     payload,
     {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+   
     }
   );
   return response.data;
@@ -719,7 +674,7 @@ export const deleteTourPackage = async (slug: string) => {
     {
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${token}`,
+        
       },
     }
   );
@@ -755,9 +710,7 @@ export const fetchTour = async (slugOrId: string) => {
 export const createTour = async (payload: any) => {
   const response=await api.post(
     "/tours",payload,{
-      headers:{
-        Authorization: `Bearer ${token}`
-      },
+      
     })
     return response.data;
 }
@@ -766,11 +719,7 @@ export const updateTour = async (slugOrId: string, payload: any) => {
   const response = await api.put(
     `/tours/${slugOrId}`,
     payload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    }
+   
   );
   return response.data;
 }
@@ -781,7 +730,7 @@ export const deleteTour = async (slugOrId: string) => {
     {
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${token}`,
+        
       },
     }
   );
@@ -791,20 +740,20 @@ export const deleteTour = async (slugOrId: string) => {
 export const fetchDashboardStats = async () => {
   // const token = JSON.parse(localStorage.getItem("duser") || "{}")?.access_token || "";
   const res = await api.get("/dashboard/overview", {
-    headers: { Authorization: `Bearer ${token}` }
+   
   });
   return res.data;
 };
 
 export const fetchUserGraph = async () => {
   const res = await api.get("/dashboard/users-graph", {
-    headers: { Authorization: `Bearer ${token}` }
+    
   });
   return res.data
 };
 export const fetchBookingsGraph = async () => {
   const res = await api.get("/dashboard/bookings-graph", {
-    headers: { Authorization: `Bearer ${token}` }
+   
   });
   return res.data
 };
