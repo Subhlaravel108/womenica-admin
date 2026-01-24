@@ -1,5 +1,5 @@
 "use client";
-import api, { fetchAllCategories, productActiveCategoryFetchList } from "@/lib/api";
+import api, { productActiveCategoryFetchList } from "@/lib/api";
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";

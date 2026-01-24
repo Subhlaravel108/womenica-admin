@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { fetchProducts, deleteProduct } from "@/lib/api";
 import Swal from "sweetalert2";
 import ProductsExcelUpload from "@/components/productsExcelUpload";
+import AmazonScrapUpload from "@/components/AmazonScrapUpload";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const ProductSkeleton = () => (
@@ -216,6 +217,9 @@ const ProductList = () => {
           </Button>
         </div>
       </div>
+
+      {/* Amazon Scrap Upload */}
+      <AmazonScrapUpload onSuccess={() => loadProducts(debouncedSearch, page)} />
 
       <Card className="p-4">
         {/* Search Bar and Action Buttons */}
