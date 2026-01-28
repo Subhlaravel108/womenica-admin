@@ -65,6 +65,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
   };
 
   return (
+    <div>
     <div className="flex gap-3 items-center">
       <Input
         id="excel-file-input"
@@ -81,6 +82,17 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
       >
         {loading ? "Uploading..." : "Upload Excel"}
       </Button>
+    </div>
+   <div>
+  <a
+    href="/public/products.xlsx"
+    className="text-sm text-blue-500 hover:underline pl-4"
+    download
+  >
+    Download Sample Excel File
+  </a>
+</div>
+
     </div>
   );
 };

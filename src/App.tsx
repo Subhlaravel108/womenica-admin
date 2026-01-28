@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-// Auth pages
+// Auth pages 
 import Login from "./pages/Login";
 import ForgetPass from "./pages/ForgetPass";
 import Logout from "./pages/Logout";

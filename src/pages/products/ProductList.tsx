@@ -207,8 +207,9 @@ const ProductList = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight">Products</h1>
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-5 ">
           <ProductsExcelUpload onSuccess={() => loadProducts(debouncedSearch, page)} />
+
           <Button asChild>
             <Link to="/product/add">
               <Plus className="mr-2 h-4 w-4" />
@@ -216,10 +217,11 @@ const ProductList = () => {
             </Link>
           </Button>
         </div>
+       
       </div>
 
       {/* Amazon Scrap Upload */}
-      <AmazonScrapUpload onSuccess={() => loadProducts(debouncedSearch, page)} />
+      {/* <AmazonScrapUpload onSuccess={() => loadProducts(debouncedSearch, page)} /> */}
 
       <Card className="p-4">
         {/* Search Bar and Action Buttons */}
