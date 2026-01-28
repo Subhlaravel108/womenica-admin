@@ -85,7 +85,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
     </div>
    <div>
   <a
-    href="/public/products.xlsx"
+    href="/products.xlsx"
     className="text-sm text-blue-500 hover:underline pl-4"
     download
   >
