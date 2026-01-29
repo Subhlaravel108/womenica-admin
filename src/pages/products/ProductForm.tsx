@@ -59,6 +59,7 @@ const ProductForm = () => {
       try {
         const res = await productActiveCategoryFetchList();
            setProductCategories(res.data);
+           console.log("categories=",res.data)
       } catch (error) {
         console.error("Failed to load product categories:", error);
         toast.error("Failed to load product categories");
