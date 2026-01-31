@@ -77,7 +77,7 @@ const DownloadDataPage = () => {
     {
       title: "Home Page featured products",
       description: "Download home page featured product JSON.",
-      url: "/api/products?download=true&type=homepage&limit=8",
+      url: "/api/products?download=true&type=homepage&limit=30",
       file: "featuredProducts_homepage.json",
     },
     {
@@ -110,7 +110,7 @@ const DownloadDataPage = () => {
   const categoryItems = productCategories.map((cat) => ({
     title: `Products in Category: ${cat.title || cat.name || "Unknown"}`,
     description: `Download products JSON in category: ${cat.title || cat.name || "Unknown"}.`,
-    url: `/api/products/download/${cat.title}?download=true&categoryName=${cat.title || cat.id}`,
+    url: `/api/products/download/${encodeURIComponent(cat.slug)}?download=true&categoryName=${encodeURIComponent(cat.slug || cat.id)}`,
     file: `products_in_category_${cat.slug || cat._id || cat.id}.json`,
   }));
 
