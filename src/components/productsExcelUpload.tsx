@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import api from "@/lib/api";
+import { X } from "lucide-react";
 
 type ActionType = "create" | "price";
 
@@ -104,6 +105,14 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
               ? "Upload & Create"
               : "Upload & Update"}
           </Button>
+          <X className="h-10 w-10 cursor-pointer text-black" onClick={() => {
+            setAction(null);
+            setFile(null);
+            // const input = document.getElementById(
+            //   "excel-file-input"
+            // ) as HTMLInputElement;
+            // if (input) input.value = "";
+          }} />
         </div>
       )}
 
