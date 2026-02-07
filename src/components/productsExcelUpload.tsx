@@ -26,7 +26,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
     try {
       setLoading(true);
 
-      const res = await api.get("/upload/export-product-skus", {
+      const res = await api.get("/products/exportSkus", {
         responseType: "blob",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -112,6 +112,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
       <div className="flex gap-3 flex-wrap">
         <Button
           variant={action === "fetch" ? "default" : "outline"}
+          disabled={action == "fetch" && loading}
           onClick={() => {
             setAction("fetch");
             handleDownloadSku();
