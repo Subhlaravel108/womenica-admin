@@ -26,7 +26,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
     try {
       setLoading(true);
 
-      const res = await api.get("/products/exportSkus", {
+      const res = await api.get("/upload/export-product-skus", {
         responseType: "blob",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -167,7 +167,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
       )}
 
       {/* SAMPLE FILE */}
-      {(action === "create" || action === "price") && (
+      {/* {(action === "create" || action === "price") && ( */}
         <a
           href="/products.xlsx"
           className="text-sm text-blue-500 hover:underline"
@@ -175,9 +175,12 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
         >
           Download Sample Excel
         </a>
-      )}
+      {/* )} */}
     </div>
   );
 };
 
 export default ProductsExcelUpload;
+
+
+    
