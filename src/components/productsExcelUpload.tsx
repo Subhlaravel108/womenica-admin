@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import api from "@/lib/api";
-import { X } from "lucide-react";
+import { X, Download } from "lucide-react";
 
-type ActionType = "create" | "price";
+type ActionType = "fetch" | "create" | "price";
 
 interface ProductsExcelUploadProps {
   onSuccess?: () => void;
@@ -16,6 +16,49 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState<ActionType | null>(null);
 
+  const token =
+    JSON.parse(localStorage.getItem("user") || "{}")?.token || "";
+
+  /* =======================
+     🔽 DOWNLOAD SKU EXCEL
+  ======================= */
+  const handleDownloadSku = async () => {
+    try {
+      setLoading(true);
+
+      const res = await api.get("/products/exportSkus", {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const blob = new Blob([res.data], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "product_skus.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Product SKU Excel downloaded");
+
+    } catch (err: any) {
+      toast.error("Failed to download SKU Excel");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =======================
+     ⬆️ UPLOAD EXCEL
+  ======================= */
   const handleUpload = async () => {
     if (!file || !action) {
       toast.error("Please select action and Excel file");
@@ -24,9 +67,6 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
 
     const formData = new FormData();
     formData.append("file", file);
-
-    const token =
-      JSON.parse(localStorage.getItem("user") || "{}")?.token || "";
 
     try {
       setLoading(true);
@@ -38,7 +78,6 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
 
       const res = await api.post(url, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -46,13 +85,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
       if (res.data.success) {
         toast.success(res.data.message || "Excel processed successfully");
         onSuccess?.();
-        setFile(null);
-        setAction(null);
-
-        const input = document.getElementById(
-          "excel-file-input"
-        ) as HTMLInputElement;
-        if (input) input.value = "";
+        reset();
       } else {
         toast.error(res.data.message || "Action failed");
       }
@@ -63,10 +96,30 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
     }
   };
 
+  const reset = () => {
+    setAction(null);
+    setFile(null);
+    const input = document.getElementById(
+      "excel-file-input"
+    ) as HTMLInputElement;
+    if (input) input.value = "";
+  };
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+
       {/* ACTION BUTTONS */}
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
+        <Button
+          variant={action === "fetch" ? "default" : "outline"}
+          onClick={() => {
+            setAction("fetch");
+            handleDownloadSku();
+          }}
+        >
+          <Download size={16} /> Fetch Product SKUs
+        </Button>
+
         <Button
           variant={action === "create" ? "default" : "outline"}
           onClick={() => setAction("create")}
@@ -82,8 +135,8 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
         </Button>
       </div>
 
-      {/* FILE INPUT */}
-      {action && (
+      {/* FILE INPUT (only for create / price) */}
+      {(action === "create" || action === "price") && (
         <div className="flex gap-3 items-center">
           <Input
             id="excel-file-input"
@@ -105,19 +158,16 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
               ? "Upload & Create"
               : "Upload & Update"}
           </Button>
-          <X className="h-10 w-10 cursor-pointer text-black" onClick={() => {
-            setAction(null);
-            setFile(null);
-            // const input = document.getElementById(
-            //   "excel-file-input"
-            // ) as HTMLInputElement;
-            // if (input) input.value = "";
-          }} />
+
+          <X
+            className="h-9 w-9 cursor-pointer"
+            onClick={reset}
+          />
         </div>
       )}
 
       {/* SAMPLE FILE */}
-    
+      {(action === "create" || action === "price") && (
         <a
           href="/products.xlsx"
           className="text-sm text-blue-500 hover:underline"
@@ -125,7 +175,7 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
         >
           Download Sample Excel
         </a>
-
+      )}
     </div>
   );
 };

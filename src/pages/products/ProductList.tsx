@@ -232,7 +232,7 @@ const ProductList = () => {
               placeholder="Search products..."
               value={searchQuery}
               onChange={handleSearch}
-              className="max-w-sm"
+              className="w-[300px]"
             />
           </div>
           {selectedProducts.length > 0 && (
