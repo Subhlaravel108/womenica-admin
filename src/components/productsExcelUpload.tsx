@@ -109,11 +109,11 @@ const ProductsExcelUpload = ({ onSuccess }: ProductsExcelUploadProps) => {
     <div className="space-y-4">
 
       {/* ACTION BUTTONS */}
-      <div className="flex gap-3 flex-wrap">
+      <div className={`flex gap-3 flex-wrap  ${action==="fetch" && "cursor-not-allowed"}`}>
         <Button
           variant={action === "fetch" ? "default" : "outline"}
           disabled={action == "fetch" && loading}
-          onClick={() => {
+          onClick={() => { 
             setAction("fetch");
             handleDownloadSku();
           }}
