@@ -124,7 +124,7 @@ const [loadingBookingGraph, setLoadingBookingGraph] = useState(true);
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{getGreeting()}! 👋</h1>
           <p className="text-gray-600 mt-1">
-            Welcome to Jaipur-Thailand Tours Admin Dashboard
+            Welcome to Womenica Admin Dashboard
           </p>
         </div>
         <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
