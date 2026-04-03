@@ -146,9 +146,9 @@ const [loadingBookingGraph, setLoadingBookingGraph] = useState(true);
             <StatCardSkeleton />
             <StatCardSkeleton />
             <StatCardSkeleton />
+            {/* <StatCardSkeleton />
             <StatCardSkeleton />
-            <StatCardSkeleton />
-            <StatCardSkeleton />
+            <StatCardSkeleton /> */}
           </>
         ) : (
         <>
@@ -168,21 +168,21 @@ const [loadingBookingGraph, setLoadingBookingGraph] = useState(true);
     color="bg-gradient-to-br from-purple-500 to-purple-600"
   />
 
-  <StatCard
+  {/* <StatCard
     title="Active Tours"
     value={stats?.activeTours ?? "-"}
     description="Running tours"
     icon={<Calendar className="h-4 w-4 text-white" />}
     color="bg-gradient-to-br from-orange-500 to-orange-600"
-  />
+  /> */}
 
-  <StatCard
+  {/* <StatCard
     title="Destinations"
     value={stats?.totalDestinations ?? "-"}
     description="Tour locations"
     icon={<Map className="h-4 w-4 text-white" />}
     color="bg-gradient-to-br from-teal-500 to-teal-600"
-  />
+  /> */}
 
   <StatCard
     title="Contacts"
@@ -192,21 +192,21 @@ const [loadingBookingGraph, setLoadingBookingGraph] = useState(true);
     color="bg-gradient-to-br from-rose-500 to-rose-600"
   />
 
-  <StatCard
+  {/* <StatCard
     title="Total Packages"
     value={stats?.totalPackges ?? "-"}
     description="Available packages"
     icon={<Package className="h-4 w-4 text-white" />}
     color="bg-gradient-to-br from-green-500 to-green-600"
-  />
+  /> */}
 </>
 
         )}
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-        {/* <div className=" space-y-6"> */}
+      {/* <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+        
           {graphLoading ? 
             <UserGraphSkeleton /> 
             : 
@@ -217,11 +217,11 @@ const [loadingBookingGraph, setLoadingBookingGraph] = useState(true);
   ) : (
     <BookingsGraph data={bookingGraph} />
   )}
-        </div>
+        </div> */}
 
-        <div className="space-y-6">
-          {/* Future right-side widgets */}
-        </div>
+        {/* <div className="space-y-6">
+         
+        </div> */}
       </div>
     // </div>
   );
