@@ -1,14 +1,9 @@
-import React, { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import type { ReactNode } from "react";
 // Auth pages 
 import Login from "./pages/Login";
 import ForgetPass from "./pages/ForgetPass";
@@ -49,7 +44,7 @@ import DownloadResources from "./pages/Download-json";
 const queryClient = new QueryClient();
 
 // Auth protection for routes
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 

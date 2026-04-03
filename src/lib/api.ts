@@ -281,25 +281,6 @@ export const changePassword = async (payload: {
   return response.data;
 };
 
-// User APIs
-export const fetchUsers = async ({ page = 1, search = "" } = {}) => {
-  let url = `/users`;
-  if (search) url += `&search=${encodeURIComponent(search)}`;
-  const res = await api.get(url);
-  return res.data;
-};
-
-export const ChangeUserStatus = async ({
-  user_id,
-  status,
-}: {
-  user_id: string;
-  status: string;
-}) => {
-  const response = await api.post(`/auth/user/status/${user_id}`, { status });
-  return response.data;
-};
-
 // Contact & Booking APIs
 export const fetchAllContacts = async ({ page = 1, search = "" } = {}) => {
   const res = await api.get("/contacts-list", {
@@ -311,48 +292,7 @@ export const fetchAllContacts = async ({ page = 1, search = "" } = {}) => {
   return res.data;
 };
 
-export const fetchAllBookings = async ({ page = 1, search = "" } = {}) => {
-  const res = await api.get("/bookings-list", {
-    params: {
-      page,
-      search
-    }
-  });
-  return res.data;
-};
-
-export const fetchFeedbacks = async ({ page = 1, search = "" } = {}) => {
-  const res = await api.get("/feedback-list", {
-    params: {
-      page,
-      search
-    }
-  });
-  return res.data;
-};
-
-export const ChangeFeedbackStatus = async ({
-  feedback_id,
-  status,
-}: {
-  feedback_id: string;
-  status: string;
-}) => {
-  const response = await api.post(`/feedback/status/${feedback_id}`, { status });
-  return response.data;
-};
-
 // Blog APIs
-export const fetchDestinations = async ({ page = 1, search = "" } = {}) => {
-  const response = await api.get(`/products?`, {
-    params: {
-      page,
-      search: search || undefined,
-    },
-  });
-  return response.data;
-};
-
 export const fetchBlogs = async ({ page = 1, search = "" } = {}) => {
   const params = new URLSearchParams();
   params.append("page", String(page));
@@ -414,30 +354,4 @@ export const fetchBookingsGraph = async () => {
   return res.data;
 };
 
-// Order APIs
-export const fetchScheduleList = async (filters?: { type?: string; command?: string }) => {
-  const response = await api.get("/schedule-list", {
-    params: filters || {},
-  });
-  return response.data;
-};
-
-export const createScheduleRequest = async (payload: any) => {
-  const response = await api.post("/schedule/create", payload);
-  return response.data;
-};
-
-export const updateOrderItemsPacking = async (orderId: string, payload: any) => {
-  const response = await api.put(`/orders/${orderId}/packing`, payload);
-  return response.data;
-};
-
-// Amazon Scrap API
-export const amazonScrapToCsv = async (payload: {
-  url: string;
-  [key: string]: any;
-}) => {
-  const response = await api.post("/amazon/scrap-to-csv", payload);
-  return response.data;
-};
 
