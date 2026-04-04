@@ -251,7 +251,7 @@ const BlogForm = () => {
             <CardDescription>
               {isEdit
                 ? "Update an existing blog post on your website."
-                : "Create engaging content for your travel website."}
+                : "Create engaging content for your website."}
             </CardDescription>
           </CardHeader>
           <CardContent>
