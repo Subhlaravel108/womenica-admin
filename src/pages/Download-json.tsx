@@ -87,6 +87,12 @@ const DownloadDataPage = () => {
       file: "all_products.json",
     },
     {
+      title: "All blog posts",
+      description: "Download all blog posts JSON.",
+      url: "/api/blog?download=true",
+      file: "all_blog.json",
+    },
+    {
       title: "All Products categories",
       description: "Download All products categories JSON.",
       url: "/api/product-categories?download=true",
