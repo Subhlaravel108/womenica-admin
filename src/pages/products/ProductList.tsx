@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -40,12 +40,35 @@ const ProductSkeleton = () => (
   </div>
 );
 
+const getPageFromQuery = (value: string | null) => {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : 1;
+};
+
 const ProductList = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = getPageFromQuery(searchParams.get("page"));
+
+  const updatePage = (newPage: number) => {
+    const safePage = Math.max(1, newPage);
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (safePage > 1) {
+          next.set("page", String(safePage));
+        } else {
+          next.delete("page");
+        }
+        return next;
+      },
+      { replace: true }
+    );
+  };
+
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
@@ -93,7 +116,7 @@ const ProductList = () => {
   // ✅ Handle search input
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    setPage(1);
+    updatePage(1);
   };
 
   // ✅ Handle single delete
@@ -392,14 +415,14 @@ const ProductList = () => {
             <Button
               variant="outline"
               disabled={page === 1}
-              onClick={() => setPage(page - 1)}
+              onClick={() => updatePage(page - 1)}
             >
               Previous
             </Button>
             <Button
               variant="outline"
               disabled={page === totalPages}
-              onClick={() => setPage(page + 1)}
+              onClick={() => updatePage(page + 1)}
             >
               Next
             </Button>
